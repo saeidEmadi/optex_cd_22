@@ -21,5 +21,8 @@ BCC = (XOR of values hatched) -1 **`It is not mentioned in the manual`**
 [optex_cd-22_rs485_manual.pdf](https://github.com/saeidEmadi/optex_cd_22/blob/main/optex_cd-22_rs485_manual.pdf)
 
 
-## Screenshots
+## Manual Screenshots
 
+![App Screenshot](https://github.com/saeidEmadi/optex_cd_22/blob/main/imgs/Capture.PNG)
+![App Screenshot](https://github.com/saeidEmadi/optex_cd_22/blob/main/imgs/Capture1.PNG)
+![App Screenshot](https://github.com/saeidEmadi/optex_cd_22/blob/main/imgs/Capture2.PNG)
