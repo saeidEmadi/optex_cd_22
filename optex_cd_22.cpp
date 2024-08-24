@@ -116,6 +116,16 @@ void optex_cd_22::dataInterpretation(QByteArray data)
 
     int RESPONSE1 = data.at(2);
 
+    int BCC = data.at(5);
+
+    int revBcc = xorCalculate(data.at(0), data.at(1), data.at(2), data.at(3), data.at(4));
+
+    if (BCC != revBcc)
+    {
+        m_errorMessage = QString("Communication error | xor value (checkSum)");
+        return;
+    }
+
     if (ACK == 6)
     {
         calculateValue(data.at(2), data.at(3));
