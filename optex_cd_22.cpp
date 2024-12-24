@@ -39,7 +39,7 @@ void optex_cd_22::initial(const QString &portName, qint32 baudRate,
     }
 }
 
-void optex_cd_22::write(int16_t STX, int16_t command, int16_t data1, int16_t data2, int16_t ETX)
+void optex_cd_22::write(uint8_t STX, uint8_t command, uint8_t data1, uint8_t data2, uint8_t ETX)
 {
     QByteArray data = packData(STX, command, data1, data2, ETX);
 
@@ -47,7 +47,7 @@ void optex_cd_22::write(int16_t STX, int16_t command, int16_t data1, int16_t dat
     m_serialPort->flush();
 }
 
-void optex_cd_22::write(int16_t STX, int16_t command, int16_t data1, int16_t data2, int16_t ETX, int16_t BCC)
+void optex_cd_22::write(uint8_t STX, uint8_t command, uint8_t data1, uint8_t data2, uint8_t ETX, uint8_t BCC)
 {
     QByteArray data = packData(STX, command, data1, data2, ETX, BCC);
 
@@ -87,14 +87,14 @@ void optex_cd_22::receiveData()
     this->dataInterpretation(response);
 }
 
-int optex_cd_22::xorCalculate(int16_t STX, int16_t command, int16_t data1, int16_t data2, int16_t ETX)
+int optex_cd_22::xorCalculate(uint8_t STX, uint8_t command, uint8_t data1, uint8_t data2, uint8_t ETX)
 {
     return (STX ^ command ^ data1 ^ data2 ^ ETX) - 1;
 }
 
-const QByteArray optex_cd_22::packData(int16_t STX, int16_t command, int16_t data1, int16_t data2, int16_t ETX, int16_t BCC)
+const QByteArray optex_cd_22::packData(uint8_t STX, uint8_t command, uint8_t data1, uint8_t data2, uint8_t ETX, uint8_t BCC)
 {
-    if (BCC == -1)
+    if (BCC == NULL)
     {
         BCC = xorCalculate(STX, command, data1, data2, ETX);
     }
@@ -112,13 +112,13 @@ const QByteArray optex_cd_22::packData(int16_t STX, int16_t command, int16_t dat
 
 void optex_cd_22::dataInterpretation(QByteArray data)
 {
-    int ACK = data.at(1);
+    uint8_t ACK = data.at(1);
 
-    int RESPONSE1 = data.at(2);
+    uint8_t RESPONSE1 = data.at(2);
 
-    int BCC = data.at(5);
+    uint8_t BCC = data.at(5);
 
-    int revBcc = xorCalculate(data.at(0), data.at(1), data.at(2), data.at(3), data.at(4));
+    uint8_t revBcc = xorCalculate(data.at(0), data.at(1), data.at(2), data.at(3), data.at(4));
 
     if (BCC != revBcc)
     {
@@ -163,7 +163,7 @@ void optex_cd_22::dataInterpretation(QByteArray data)
     }
 }
 
-void optex_cd_22::calculateValue(quint8 data1, quint8 data2)
+void optex_cd_22::calculateValue(uint8_t data1, uint8_t data2)
 {
     double result = 0;
 
@@ -171,12 +171,12 @@ void optex_cd_22::calculateValue(quint8 data1, quint8 data2)
     {
         data1 = 0xff - data1;
         data2 = 0xff - data2;
-        result = (data1 * 256) + data2;
+        result = (data1 << 8) + data2;
         result = -1 * result - 1;
     }
     else
     {
-        result = (data1 * 256) + data2;
+        result = (data1 << 8) + data2;
     }
 
     result = (result / measurementValueScaling) + centerOfMeasurementRange;

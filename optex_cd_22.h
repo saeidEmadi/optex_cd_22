@@ -19,8 +19,8 @@ public:
     void initial(const QString &portName, qint32 baudRate, QSerialPort::DataBits dataLength,
         QSerialPort::StopBits stopLength, QSerialPort::Parity parityCheck, QString *error = nullptr);
 
-    void write(int16_t STX, int16_t command, int16_t data1, int16_t data2, int16_t ETX);
-    void write(int16_t STX, int16_t command, int16_t data1, int16_t data2, int16_t ETX, int16_t BCC);
+    void write(uint8_t STX, uint8_t command, uint8_t data1, uint8_t data2, uint8_t ETX);
+    void write(uint8_t STX, uint8_t command, uint8_t data1, uint8_t data2, uint8_t ETX, uint8_t BCC);
 
     double value(QString *error = nullptr);
 
@@ -30,13 +30,13 @@ private:
 
     void receiveData();
 
-    int xorCalculate(int16_t STX, int16_t command, int16_t data1, int16_t data2, int16_t ETX);
+    int xorCalculate(uint8_t STX, uint8_t command, uint8_t data1, uint8_t data2, uint8_t ETX);
 
-    const QByteArray packData(int16_t STX, int16_t command, int16_t data1, int16_t data2, int16_t ETX, int16_t BCC = -1);
+    const QByteArray packData(uint8_t STX, uint8_t command, uint8_t data1, uint8_t data2, uint8_t ETX, uint8_t BCC = NULL);
 
     void dataInterpretation(QByteArray data);
 
-    void calculateValue(quint8 data1, quint8 data2);
+    void calculateValue(uint8_t data1, uint8_t data2);
 
 private:
     QSerialPort *m_serialPort;
